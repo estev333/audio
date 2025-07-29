@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Áudio com beep</title>
+</head>
+<body>
+
+<audio id="bg-music" loop autoplay>
+  <source src="https://mp3-twg5.vercel.app/mus_mystery.ogg" type="audio/ogg" />
+  Seu navegador não suporta áudio HTML5.
+</audio>
+
+<script>
+  window.addEventListener("DOMContentLoaded", function () {
+    const bgMusic = document.getElementById("bg-music");
+    bgMusic.volume = 0.2; // Volume da música de fundo
+
+    const clickSound = new Audio("https://mp3-twg5.vercel.app/one_beep-99630.mp3");
+    clickSound.volume = 0.2; // Volume do beep
+
+    function handleInteraction(event) {
+      if (bgMusic.paused) {
+        bgMusic.play().catch((e) => {
+          console.warn("Autoplay bloqueado:", e);
+        });
+      }
+
+      const target = event.target.closest("a, button, [role='button'], [onclick], [tabindex]:not([tabindex='-1'])");
+      if (target) {
+        const beep = clickSound.cloneNode();
+        beep.volume = 0.2;
+        beep.play().catch(e => {
+          console.warn("Beep bloqueado:", e);
+        });
+      }
+    }
+
+    document.body.addEventListener('click', handleInteraction);
+    document.body.addEventListener('touchstart', handleInteraction);
+  });
+</script>
+
+</body>
+</html>
